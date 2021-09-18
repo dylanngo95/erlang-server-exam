@@ -7,8 +7,10 @@
 
 -behaviour(supervisor).
 
+%% API
 -export([start_link/0]).
 
+%% Callbacks
 -export([init/1]).
 
 -define(SERVER, ?MODULE).
@@ -26,10 +28,15 @@ start_link() ->
 %%                  type => worker(),       % optional
 %%                  modules => modules()}   % optional
 init([]) ->
-    SupFlags = #{strategy => one_for_all,
-                 intensity => 0,
-                 period => 1},
-    ChildSpecs = [],
-    {ok, {SupFlags, ChildSpecs}}.
+    RestartStrategy = {one_for_one, 0, 1},
+    Server = {tr_server,
+        {tr_server, start_link, []},
+        permanent,
+        2000,
+        worker,
+        [tr_server]
+    },
+    Children = [Server],
+    {ok, {RestartStrategy, Children}}.
 
 %% internal functions
