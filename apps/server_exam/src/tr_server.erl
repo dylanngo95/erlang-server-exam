@@ -95,7 +95,9 @@ do_rpc(Socket, RawData),
 RequestCount = State#state.request_count,
 {noreply, State#state{request_count = RequestCount + 1}};
 handle_info(timeout, #state{lsock = LSock} = State) ->
+io:format("Waiting client ~p~n", [LSock]),
 {ok, _Sock} = gen_tcp:accept(LSock),
+io:format("Accept client ~p~n", [_Sock]),
 {noreply, State}.
 
 terminate(_Reason, _State) ->
