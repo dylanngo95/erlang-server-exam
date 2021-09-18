@@ -1,4 +1,4 @@
-Erlang Server Example
+Erlang Server/Client TCP Socket Example
 =====
 
 An OTP application
